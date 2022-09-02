@@ -76,7 +76,7 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        { path: '', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <GeneralApp /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         {
@@ -86,7 +86,7 @@ export default function Router() {
         {
           path: 'e-commerce',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/e-commerce/shop" replace /> },
+            { path: '', element: <Navigate to="/dashboard/e-commerce/shop" replace /> },
             { path: 'shop', element: <EcommerceShop /> },
             { path: 'product/:name', element: <EcommerceProductDetails /> },
             { path: 'list', element: <EcommerceProductList /> },
@@ -99,19 +99,19 @@ export default function Router() {
         {
           path: 'user',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
+            { path: '', element: <Navigate to="/dashboard/user/profile" replace /> },
             { path: 'profile', element: <UserProfile /> },
             { path: 'cards', element: <UserCards /> },
             { path: 'list', element: <UserList /> },
             { path: 'new', element: <UserCreate /> },
-            { path: '/:name/edit', element: <UserCreate /> },
+            { path: ':name/edit', element: <UserCreate /> },
             { path: 'account', element: <UserAccount /> }
           ]
         },
         {
           path: 'blog',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/blog/posts" replace /> },
+            { path: '', element: <Navigate to="/dashboard/blog/posts" replace /> },
             { path: 'posts', element: <BlogPosts /> },
             { path: 'post/:title', element: <BlogPost /> },
             { path: 'new-post', element: <BlogNewPost /> }
@@ -120,7 +120,7 @@ export default function Router() {
         {
           path: 'mail',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/mail/all" replace /> },
+            { path: '', element: <Navigate to="/dashboard/mail/all" replace /> },
             { path: 'label/:customLabel', element: <Mail /> },
             { path: 'label/:customLabel/:mailId', element: <Mail /> },
             { path: ':systemLabel', element: <Mail /> },
@@ -130,7 +130,7 @@ export default function Router() {
         {
           path: 'chat',
           children: [
-            { path: '/', element: <Chat /> },
+            { path: '', element: <Chat /> },
             { path: 'new', element: <Chat /> },
             { path: ':conversationKey', element: <Chat /> }
           ]
@@ -155,17 +155,17 @@ export default function Router() {
       ]
     },
     {
-      path: '/',
+      path: '',
       element: <MainLayout />,
       children: [
-        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        { path: '', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'about-us', element: <About /> },
         { path: 'contact-us', element: <Contact /> },
         { path: 'faqs', element: <Faqs /> },
         {
           path: 'components',
           children: [
-            { path: '/', element: <ComponentsOverview /> },
+            { path: '', element: <ComponentsOverview /> },
             // FOUNDATIONS
             { path: 'color', element: <Color /> },
             { path: 'typography', element: <Typography /> },

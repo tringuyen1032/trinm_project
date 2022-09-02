@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import { useEffect, useState } from 'react';
 // material
-// import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@material-ui/icons/DriveFileRenameOutline';
 import { styled, useTheme } from '@material-ui/core/styles';
-import { Box, Stack, Link, Tooltip, Typography, Button, useMediaQuery } from '@material-ui/core';
+import { Box, Stack, Link, Tooltip, Typography, Button, useMediaQuery, IconButton } from '@material-ui/core';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 // components
@@ -71,16 +71,28 @@ export default function Login() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const [signUp, setSignUp] = useState(false);
-  const [tittle, setTittle] = useState('Imagination at Work.');
-  const [tittleSave, setTittleSave] = useState('Imagination at Work.');
-  const [editTittle, setEditTittle] = useState(false);
-  const [description, setDescription] = useState(
-    'This culture and theme resulted in a rebranding with the new tagline "Imagination at Work," which embodies the idea that imagination inspires the human initiative to thrive at what we do.'
-  );
-  const [descriptionSave, setDescriptionSave] = useState(
-    'This culture and theme resulted in a rebranding with the new tagline "Imagination at Work," which embodies the idea that imagination inspires the human initiative to thrive at what we do.'
-  );
-  const [editDescription, setEditDescriptione] = useState(false);
+  const [edit, setEdit] = useState('');
+  const [tittle, setTittle] = useState({
+    content: 'Imagination at Work.',
+    setting: {
+      variant: 'h4',
+      color: '#ffffff',
+      fontStyle: 'italic',
+      fontWeight: 'normal',
+      decoration: 'none'
+    }
+  });
+  const [description, setDescription] = useState({
+    content:
+      'This culture and theme resulted in a rebranding with the new tagline "Imagination at Work," which embodies the idea that imagination inspires the human initiative to thrive at what we do.',
+    setting: {
+      variant: 'body2',
+      color: '#ffffff',
+      fontStyle: 'italic',
+      fontWeight: 'normal',
+      decoration: 'none'
+    }
+  });
 
   const handleLoginAuth0 = async () => {
     try {
@@ -90,8 +102,13 @@ export default function Login() {
     }
   };
 
-  const handleClick = async () => {
+  const handleClick = () => {
     setSignUp(!signUp);
+  };
+
+  const handleEdit = (value) => {
+    console.log(value);
+    setEdit(value);
   };
 
   useEffect(() => {
@@ -154,23 +171,60 @@ export default function Login() {
 
         <MHidden width="mdDown">
           <SectionStyle>
-            <Typography variant="h4" sx={{ px: 5, mt: 14, mb: 3, color: 'white', fontStyle: 'italic' }}>
-              {tittle}
-              {/* <IconButton color="primary" aria-label="edit tittle" component="label" sx={{ mb: 1, color: 'black' }}>
+            <Typography
+              variant={tittle.setting.variant}
+              sx={{
+                px: 5,
+                mt: 14,
+                mb: 3,
+                color: tittle.setting.color,
+                fontStyle: tittle.setting.fontStyle,
+                fontWeight: tittle.setting.fontWeight,
+                textDecoration: tittle.setting.decoration
+              }}
+            >
+              {tittle.content}
+              <IconButton
+                color="primary"
+                aria-label="edit tittle"
+                component="label"
+                sx={{ mb: 2, color: 'black' }}
+                onClick={(e) => handleEdit('tittle')}
+              >
                 <EditIcon fontSize="small" />
-              </IconButton> */}
+              </IconButton>
             </Typography>
-            <Typography variant="body2" sx={{ px: 5, color: 'white', fontStyle: 'italic' }}>
-              {description}
-              {/* <IconButton color="primary" aria-label="edit tittle" component="label" sx={{ mb: 1, color: 'black' }}>
+            <Typography
+              variant={description.setting.variant}
+              sx={{
+                px: 5,
+                color: description.setting.color,
+                fontStyle: description.setting.fontStyle,
+                fontWeight: description.setting.fontWeight,
+                textDecoration: description.setting.decoration
+              }}
+            >
+              {description.content}
+              <IconButton
+                color="primary"
+                aria-label="edit tittle"
+                component="label"
+                sx={{ mb: 2, color: 'black' }}
+                onClick={(e) => handleEdit('description')}
+              >
                 <EditIcon fontSize="small" />
-              </IconButton> */}
+              </IconButton>
             </Typography>
           </SectionStyle>
         </MHidden>
       </SecondaryStyle>
       <MHidden width="mdDown">
-        <Settings />
+        <Settings
+          edit={edit}
+          setEdit={setEdit}
+          editContent={edit === 'tittle' ? tittle : edit === 'description' ? description : null}
+          setContent={edit === 'tittle' ? setTittle : edit === 'description' ? setDescription : null}
+        />
       </MHidden>
     </RootStyle>
   );
