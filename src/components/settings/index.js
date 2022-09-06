@@ -13,7 +13,9 @@ import {
   Stack,
   TextField,
   Autocomplete,
-  IconButton
+  IconButton,
+  Grid,
+  Button
 } from '@material-ui/core';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
@@ -34,7 +36,7 @@ const DRAWER_WIDTH = 260;
 
 const variants = ['h1', 'h2', 'h3', 'h4', 'h5', 'subtitle1', 'body1', 'body2', 'inherit'];
 
-export default function Settings({ edit, setEdit, editContent, setContent }) {
+export default function Settings({ edit, setEdit, editContent, setContent, contentPrev, setContentPrev }) {
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
@@ -45,11 +47,18 @@ export default function Settings({ edit, setEdit, editContent, setContent }) {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (edit !== '') {
+      setOpen(true);
+    }
+  }, [edit]);
+
   const handleToggle = () => {
     setOpen((prev) => !prev);
   };
 
   const handleClose = () => {
+    setEdit('');
     setOpen(false);
   };
 
@@ -119,7 +128,7 @@ export default function Settings({ edit, setEdit, editContent, setContent }) {
           </Stack>
           <Divider />
 
-          {edit === '' && (
+          {edit === '' && open && (
             <Scrollbar sx={{ height: 1 }}>
               <Stack spacing={4} sx={{ pt: 3, px: 3, pb: 15 }}>
                 {/* <Stack spacing={1.5}>
@@ -147,133 +156,168 @@ export default function Settings({ edit, setEdit, editContent, setContent }) {
             </Scrollbar>
           )}
           {edit !== '' && (
-            <div>
-              <Stack spacing={4} sx={{ pt: 3, px: 3, pb: 15 }}>
-                <Stack spacing={1.5}>
-                  <Typography variant="subtitle2">Content</Typography>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={3}
-                    value={editContent.content}
-                    onChange={(e) =>
-                      setContent({
-                        content: e.target.value,
-                        setting: editContent.setting
-                      })
-                    }
-                  />
-                </Stack>
-
-                <Stack spacing={1.5}>
-                  <Typography variant="subtitle2">Variant</Typography>
-                  <Autocomplete
-                    disablePortal
-                    id="disable-clearable"
-                    disableClearable
-                    fullWidth
-                    options={variants}
-                    getOptionLabel={(option) => option}
-                    onChange={(event, newValue) =>
-                      setContent({
-                        content: editContent.content,
-                        setting: {
-                          variant: newValue,
-                          color: editContent.setting.color,
-                          fontStyle: editContent.setting.fontStyle,
-                          fontWeight: editContent.setting.fontWeight,
-                          decoration: editContent.setting.decoration
-                        }
-                      })
-                    }
-                    value={editContent.setting.variant}
-                    renderInput={(params) => <TextField {...params} margin="none" />}
-                  />
-                </Stack>
-
-                <Stack spacing={1.5}>
-                  <Typography variant="subtitle2">Front style</Typography>
-                  <Stack direction="row" spacing={2}>
-                    <IconButton
-                      color={editContent.setting.fontStyle === 'normal' ? 'inherit' : 'primary'}
-                      onClick={(e) => {
-                        setContent({
-                          content: editContent.content,
-                          setting: {
-                            variant: editContent.setting.variant,
-                            color: editContent.setting.color,
-                            fontStyle: editContent.setting.fontStyle === 'normal' ? 'italic' : 'normal',
-                            fontWeight: editContent.setting.fontWeight,
-                            decoration: editContent.setting.decoration
-                          }
-                        });
-                      }}
-                    >
-                      <FormatItalicIcon />
-                    </IconButton>
-                    <IconButton
-                      color={editContent.setting.fontWeight === 'normal' ? 'inherit' : 'primary'}
-                      onClick={(e) => {
-                        setContent({
-                          content: editContent.content,
-                          setting: {
-                            variant: editContent.setting.variant,
-                            color: editContent.setting.color,
-                            fontStyle: editContent.setting.fontStyle,
-                            fontWeight: editContent.setting.fontWeight === 'normal' ? 'bold' : 'normal',
-                            decoration: editContent.setting.decoration
-                          }
-                        });
-                      }}
-                    >
-                      <FormatBoldIcon />
-                    </IconButton>
-                    <IconButton
-                      color={editContent.setting.decoration === 'none' ? 'inherit' : 'primary'}
-                      onClick={(e) => {
-                        setContent({
-                          content: editContent.content,
-                          setting: {
-                            variant: editContent.setting.variant,
-                            color: editContent.setting.color,
-                            fontStyle: editContent.setting.fontStyle,
-                            fontWeight: editContent.setting.fontWeight,
-                            decoration: editContent.setting.decoration === 'none' ? 'underline' : 'none'
-                          }
-                        });
-                      }}
-                    >
-                      <FormatUnderlinedIcon />
-                    </IconButton>
-                  </Stack>
-                </Stack>
-
-                <Stack spacing={1.5}>
-                  <Typography variant="subtitle2">Color</Typography>
-                  <label className="color-selector">
-                    <span className="circle" style={{ background: editContent.setting.color }} />
-                    <span>{editContent.setting.color}</span>
-                    <input
-                      type="color"
-                      value={editContent.setting.color}
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Stack spacing={4} sx={{ pt: 3, px: 3, pb: 15 }}>
+                  <Stack spacing={1.5}>
+                    <Typography variant="subtitle2">Content</Typography>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={3}
+                      value={editContent.content}
                       onChange={(e) =>
                         setContent({
+                          content: e.target.value,
+                          setting: editContent.setting
+                        })
+                      }
+                    />
+                  </Stack>
+
+                  <Stack spacing={1.5}>
+                    <Typography variant="subtitle2">Variant</Typography>
+                    <Autocomplete
+                      disablePortal
+                      id="disable-clearable"
+                      disableClearable
+                      fullWidth
+                      options={variants}
+                      getOptionLabel={(option) => option}
+                      onChange={(event, newValue) =>
+                        setContent({
                           content: editContent.content,
                           setting: {
-                            variant: editContent.setting.variant,
-                            color: e.target.value,
+                            variant: newValue,
+                            color: editContent.setting.color,
                             fontStyle: editContent.setting.fontStyle,
                             fontWeight: editContent.setting.fontWeight,
                             decoration: editContent.setting.decoration
                           }
                         })
                       }
-                      className="hidden"
+                      value={editContent.setting.variant}
+                      renderInput={(params) => <TextField {...params} margin="none" />}
                     />
-                  </label>
+                  </Stack>
+
+                  <Stack spacing={1.5}>
+                    <Typography variant="subtitle2">Front style</Typography>
+                    <Stack direction="row" spacing={2}>
+                      <IconButton
+                        color={editContent.setting.fontStyle === 'normal' ? 'inherit' : 'primary'}
+                        onClick={(e) => {
+                          setContent({
+                            content: editContent.content,
+                            setting: {
+                              variant: editContent.setting.variant,
+                              color: editContent.setting.color,
+                              fontStyle: editContent.setting.fontStyle === 'normal' ? 'italic' : 'normal',
+                              fontWeight: editContent.setting.fontWeight,
+                              decoration: editContent.setting.decoration
+                            }
+                          });
+                        }}
+                      >
+                        <FormatItalicIcon />
+                      </IconButton>
+                      <IconButton
+                        color={editContent.setting.fontWeight === 'normal' ? 'inherit' : 'primary'}
+                        onClick={(e) => {
+                          setContent({
+                            content: editContent.content,
+                            setting: {
+                              variant: editContent.setting.variant,
+                              color: editContent.setting.color,
+                              fontStyle: editContent.setting.fontStyle,
+                              fontWeight: editContent.setting.fontWeight === 'normal' ? 'bold' : 'normal',
+                              decoration: editContent.setting.decoration
+                            }
+                          });
+                        }}
+                      >
+                        <FormatBoldIcon />
+                      </IconButton>
+                      <IconButton
+                        color={editContent.setting.decoration === 'none' ? 'inherit' : 'primary'}
+                        onClick={(e) => {
+                          setContent({
+                            content: editContent.content,
+                            setting: {
+                              variant: editContent.setting.variant,
+                              color: editContent.setting.color,
+                              fontStyle: editContent.setting.fontStyle,
+                              fontWeight: editContent.setting.fontWeight,
+                              decoration: editContent.setting.decoration === 'none' ? 'underline' : 'none'
+                            }
+                          });
+                        }}
+                      >
+                        <FormatUnderlinedIcon />
+                      </IconButton>
+                    </Stack>
+                  </Stack>
+
+                  <Stack spacing={1.5}>
+                    <Typography variant="subtitle2">Color</Typography>
+                    <label className="color-selector">
+                      <span className="circle" style={{ background: editContent.setting.color }} />
+                      <span>{editContent.setting.color}</span>
+                      <input
+                        type="color"
+                        value={editContent.setting.color}
+                        onChange={(e) =>
+                          setContent({
+                            content: editContent.content,
+                            setting: {
+                              variant: editContent.setting.variant,
+                              color: e.target.value,
+                              fontStyle: editContent.setting.fontStyle,
+                              fontWeight: editContent.setting.fontWeight,
+                              decoration: editContent.setting.decoration
+                            }
+                          })
+                        }
+                        className="hidden"
+                      />
+                    </label>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </div>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Grid container>
+                  <Grid item xs={6} sx={{ textAlign: 'center' }}>
+                    <Button
+                      size="small"
+                      color="primary"
+                      type="submit"
+                      variant="contained"
+                      onClick={() => {
+                        setContentPrev(editContent);
+                        setEdit('');
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6} sx={{ textAlign: 'center' }}>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      type="submit"
+                      variant="contained"
+                      onClick={() => {
+                        setContent(contentPrev);
+                        setEdit('');
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           )}
         </Paper>
       </Box>

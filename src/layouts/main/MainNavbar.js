@@ -1,7 +1,7 @@
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@material-ui/core';
+import { Box, Stack, AppBar, Toolbar, Container } from '@material-ui/core';
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop';
 // components
@@ -12,6 +12,10 @@ import { MHidden } from '../../components/@material-extend';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
+
+import AccountPopover from '../dashboard/AccountPopover';
+import LanguagePopover from '../dashboard/LanguagePopover';
+import NotificationsPopover from '../dashboard/NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
@@ -71,22 +75,27 @@ export default function MainNavbar() {
           <RouterLink to="/">
             <Logo />
           </RouterLink>
-          <Label color="info" sx={{ ml: 1 }}>
+          {/* <Label color="info" sx={{ ml: 1 }}>
             v2.3.0
-          </Label>
+          </Label> */}
           <Box sx={{ flexGrow: 1 }} />
 
-          <MHidden width="mdDown">
+          {/* <MHidden width="mdDown">
             <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
-          </MHidden>
+          </MHidden> */}
 
-          <Button variant="contained" target="_blank" href="https://material-ui.com/store/items/minimal-dashboard/">
+          {/* <Button variant="contained" target="_blank" href="https://material-ui.com/store/items/minimal-dashboard/">
             Purchase Now
-          </Button>
+          </Button> */}
 
-          <MHidden width="mdUp">
+          {/* <MHidden width="mdUp">
             <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
-          </MHidden>
+          </MHidden> */}
+          <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+            <LanguagePopover />
+            <NotificationsPopover />
+            <AccountPopover />
+          </Stack>
         </Container>
       </ToolbarStyle>
 

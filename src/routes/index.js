@@ -72,13 +72,12 @@ export default function Router() {
       path: 'dashboard',
       element: (
         <AuthGuard>
-          <DashboardLayout />
+          <MainLayout />
         </AuthGuard>
       ),
       children: [
         { path: '', element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
+        { path: 'app', element: <Map /> },
         {
           path: 'analytics',
           element: <GeneralAnalytics />

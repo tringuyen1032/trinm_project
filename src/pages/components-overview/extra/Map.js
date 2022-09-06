@@ -77,28 +77,11 @@ const SkeletonLoad = (
 
 export default function Map() {
   return (
-    <RootStyle title="Components: Map | Minimal-UI">
-      <Box
-        sx={{
-          pt: 6,
-          pb: 1,
-          mb: 10,
-          bgcolor: (theme) => (theme.palette.mode === 'light' ? 'grey.200' : 'grey.800')
-        }}
-      >
-        <Container maxWidth="lg">
-          <HeaderBreadcrumbs
-            heading="Map"
-            links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Map' }]}
-            moreLink={['http://visgl.github.io/react-map-gl', 'https://docs.mapbox.com-js/example']}
-          />
-        </Container>
-      </Box>
-
-      <Container maxWidth="lg">
+    <RootStyle title="Map">
+      <Container maxWidth="xl">
         <Suspense fallback={SkeletonLoad}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Card sx={{ mb: 3 }}>
                 <CardHeader title="Map Change Theme" />
                 <CardContent>
@@ -107,30 +90,18 @@ export default function Map() {
                   </MapWrapperStyle>
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <Card sx={{ mb: 3 }}>
-                <CardHeader title="Map Dynamic Styling" />
                 <CardContent>
                   <MapWrapperStyle>
-                    <MapDynamicStyling {...baseSettings} />
+                    <MapMarkersPopups {...baseSettings} data={COUNTRIES} themes={THEMES} />
                   </MapWrapperStyle>
                 </CardContent>
               </Card>
             </Grid>
-
-            <Grid item xs={12}>
-              <Card sx={{ mb: 3 }}>
-                <CardHeader title="Map Markers & Popups" />
-                <CardContent>
-                  <MapWrapperStyle>
-                    <MapMarkersPopups {...baseSettings} data={COUNTRIES} mapStyle={THEMES.light} />
-                  </MapWrapperStyle>
-                </CardContent>
-              </Card>
-            </Grid>
-
+            {/* 
             <Grid item xs={12}>
               <Card sx={{ mb: 3 }}>
                 <CardHeader title="Map Draggable Markers" />
@@ -243,7 +214,7 @@ export default function Map() {
                   </MapWrapperStyle>
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Suspense>
       </Container>

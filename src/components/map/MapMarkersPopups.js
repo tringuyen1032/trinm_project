@@ -1,6 +1,6 @@
-import MapGL from 'react-map-gl';
+import ReactMapGL from 'react-map-gl';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 // material
 import { Box, Typography } from '@material-ui/core';
 //
@@ -13,21 +13,27 @@ import {
   MapControlFullscreen
 } from './controls';
 
+import ControlPanel from './map-change-theme/ControlPanel';
+
 // ----------------------------------------------------------------------
 
 MapMarkersPopups.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  themes: PropTypes.object
 };
 
-export default function MapMarkersPopups({ data, ...other }) {
+export default function MapMarkersPopups({ themes, data, ...other }) {
   const [tooltip, setTooltip] = useState(null);
+  const [selectTheme, setSelectTheme] = useState('light');
   const [viewport, setViewport] = useState({
     zoom: 2
   });
 
+  const handleChangeTheme = useCallback((event) => setSelectTheme(event.target.value), []);
+
   return (
     <>
-      <MapGL {...viewport} onViewportChange={setViewport} {...other}>
+      <ReactMapGL {...viewport} onViewportChange={setViewport} mapStyle={themes[selectTheme]} {...other}>
         <MapControlScale />
         <MapControlNavigation />
         <MapControlFullscreen />
@@ -90,7 +96,8 @@ export default function MapMarkersPopups({ data, ...other }) {
             </Box>
           </MapControlPopup>
         )}
-      </MapGL>
+      </ReactMapGL>
+      <ControlPanel themes={themes} selectTheme={selectTheme} onChangeTheme={handleChangeTheme} />
     </>
   );
 }

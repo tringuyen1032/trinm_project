@@ -2,8 +2,22 @@
 import { useEffect, useState } from 'react';
 // material
 import EditIcon from '@material-ui/icons/DriveFileRenameOutline';
+import AddIcon from '@material-ui/icons/Add';
+import SaveIcon from '@material-ui/icons/Save';
+import PrintIcon from '@material-ui/icons/Print';
+import ShareIcon from '@material-ui/icons/Share';
 import { styled, useTheme } from '@material-ui/core/styles';
-import { Box, Stack, Link, Tooltip, Typography, Button, useMediaQuery, IconButton } from '@material-ui/core';
+import {
+  Box,
+  Stack,
+  Link,
+  Tooltip,
+  Typography,
+  Button,
+  useMediaQuery,
+  IconButton,
+  ClickAwayListener
+} from '@material-ui/core';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 // components
@@ -71,6 +85,7 @@ export default function Login() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const [signUp, setSignUp] = useState(false);
+  const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState('');
   const [tittle, setTittle] = useState({
     content: 'Imagination at Work.',
@@ -82,7 +97,28 @@ export default function Login() {
       decoration: 'none'
     }
   });
+  const [tittlePrev, setTittlePrev] = useState({
+    content: 'Imagination at Work.',
+    setting: {
+      variant: 'h4',
+      color: '#ffffff',
+      fontStyle: 'italic',
+      fontWeight: 'normal',
+      decoration: 'none'
+    }
+  });
   const [description, setDescription] = useState({
+    content:
+      'This culture and theme resulted in a rebranding with the new tagline "Imagination at Work," which embodies the idea that imagination inspires the human initiative to thrive at what we do.',
+    setting: {
+      variant: 'body2',
+      color: '#ffffff',
+      fontStyle: 'italic',
+      fontWeight: 'normal',
+      decoration: 'none'
+    }
+  });
+  const [descriptionPrev, setDescriptionPrev] = useState({
     content:
       'This culture and theme resulted in a rebranding with the new tagline "Imagination at Work," which embodies the idea that imagination inspires the human initiative to thrive at what we do.',
     setting: {
@@ -109,6 +145,14 @@ export default function Login() {
   const handleEdit = (value) => {
     console.log(value);
     setEdit(value);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
+  const handleAway = () => {
+    setOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -174,25 +218,37 @@ export default function Login() {
             <Typography
               variant={tittle.setting.variant}
               sx={{
-                px: 5,
                 mt: 14,
                 mb: 3,
+                pl: 5,
+                pr: 5,
                 color: tittle.setting.color,
                 fontStyle: tittle.setting.fontStyle,
                 fontWeight: tittle.setting.fontWeight,
-                textDecoration: tittle.setting.decoration
+                textDecoration: tittle.setting.decoration,
+                position: 'relative',
+                borderStyle: 'solid',
+                borderColor: open || edit === 'tittle' ? '#09757a' : 'transparent'
               }}
+              // onMouseEnter={handleAway}
+              // onMouseLeave={handleClickAway}
+              // onClick={(e) => handleEdit('tittle')}
             >
               {tittle.content}
-              <IconButton
-                color="primary"
-                aria-label="edit tittle"
-                component="label"
-                sx={{ mb: 2, color: 'black' }}
-                onClick={(e) => handleEdit('tittle')}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
+              {open ? (
+                <>
+                  <Box sx={{ position: 'absolute', top: 0, right: 0 }}>
+                    <IconButton
+                      color="primary"
+                      aria-label="edit tittle"
+                      component="label"
+                      sx={{ mb: 2, color: 'black' }}
+                    >
+                      <EditIcon fontSize="small" sx={{ color: '#09757a' }} />
+                    </IconButton>
+                  </Box>
+                </>
+              ) : null}
             </Typography>
             <Typography
               variant={description.setting.variant}
@@ -205,7 +261,7 @@ export default function Login() {
               }}
             >
               {description.content}
-              <IconButton
+              {/* <IconButton
                 color="primary"
                 aria-label="edit tittle"
                 component="label"
@@ -213,19 +269,21 @@ export default function Login() {
                 onClick={(e) => handleEdit('description')}
               >
                 <EditIcon fontSize="small" />
-              </IconButton>
+              </IconButton> */}
             </Typography>
           </SectionStyle>
         </MHidden>
       </SecondaryStyle>
-      <MHidden width="mdDown">
+      {/* <MHidden width="mdDown">
         <Settings
           edit={edit}
           setEdit={setEdit}
           editContent={edit === 'tittle' ? tittle : edit === 'description' ? description : null}
+          contentPrev={edit === 'tittle' ? tittlePrev : edit === 'description' ? descriptionPrev : null}
+          setContentPrev={edit === 'tittle' ? setTittlePrev : edit === 'description' ? setDescriptionPrev : null}
           setContent={edit === 'tittle' ? setTittle : edit === 'description' ? setDescription : null}
         />
-      </MHidden>
+      </MHidden> */}
     </RootStyle>
   );
 }
